@@ -22,23 +22,30 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Check if the release already exists
+          # A fork can inherit the annotated tag without a GitHub Release.
+          # Uploads target the Release, so the tag alone is not enough.
+          set -euo pipefail
           TARGET_REPO="${{ github.repository }}"
           TAG_NAME="toolchain-cache"
-          
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          
-          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-            echo "Tag not found. Creating backdated tag and release..."
-            
-            GIT_COMMITTER_DATE="2015-01-01T12:00:00" git tag -a "$TAG_NAME" -m "Internal Toolchains Cache"
-            git push origin "$TAG_NAME"
-            
-            echo "Release not found. Creating..."
-            gh release create "$TAG_NAME" --title "Toolchains Mirror Cache" --notes "Deduplicated Toolchains for Kernel Build" --repo "$TARGET_REPO"
+
+          if gh release view "$TAG_NAME" --repo "$TARGET_REPO" >/dev/null 2>&1; then
+            echo "Release '$TAG_NAME' already exists. Skipping creation."
           else
-            echo "Release 'toolchain-cache' already exists. Skipping creation."
+            echo "GitHub Release '$TAG_NAME' not found."
+
+            if git rev-parse "refs/tags/$TAG_NAME" >/dev/null 2>&1 || git ls-remote --exit-code origin "refs/tags/${TAG_NAME}" >/dev/null 2>&1; then
+              echo "Tag '$TAG_NAME' already exists. Creating release from the existing tag..."
+            else
+              echo "Tag not found. Creating backdated tag..."
+              GIT_COMMITTER_DATE="2015-01-01T12:00:00" git tag -a "$TAG_NAME" -m "Internal Toolchains Cache"
+              git push origin "$TAG_NAME"
+            fi
+
+            # --latest=false keeps this internal cache off the repo's Latest release.
+            gh release create "$TAG_NAME" --title "Toolchains Mirror Cache" --notes "Deduplicated Toolchains for Kernel Build" --latest=false --repo "$TARGET_REPO"
           fi
 
   generate-mirror-matrix:
