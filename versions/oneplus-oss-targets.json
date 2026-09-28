@@ -1,0 +1,76 @@
+{
+  "resolved_on": "2026-09-28",
+  "status_page": {
+    "repo": "https://github.com/WildKernels/OnePlus_KernelSU_SUSFS",
+    "ref": "status-page",
+    "sha": "f51d62d907fb91b6e6be0a06d0d56c4c91f91961",
+    "date": "2026-09-28T03:19:37Z"
+  },
+  "note": "Wild AK3 manifests sync GKI common plus modules_and_devicetree. Official OnePlusOSS kernel_manifest also lists a vendor tree (msm-kernel or soc-repo) that this builder does not compile. Those vendor tips are recorded below and are not added to the manifests.",
+  "devices": {
+    "OP15": {
+      "os_version": "A16",
+      "config": "configs/a16/OP15.json",
+      "manifest": "manifests/a16/oneplus_15_w.xml",
+      "gki": "android16-6.12",
+      "kernel_version": "6.12.23",
+      "branch": "oneplus/sm8850_b_16.0.0_oneplus_15",
+      "official_manifest": "https://github.com/OnePlusOSS/kernel_manifest/blob/oneplus/sm8850/oneplus_15.xml",
+      "projects": {
+        "android_kernel_common_oneplus_sm8850": {
+          "path": "kernel_platform/common",
+          "sha": "d9053b907db4bb5da938e9cf947d0ae32302ceaf",
+          "date": "2026-06-03T06:46:40Z",
+          "subject": "Synchronize code for OnePlus CPH2745_16.0.7.201(EX01) CPH2747_16.0.7.201(EX01) CPH2749_16.0.7.202(EX01) PLK110_16.0.7.207(CN01)"
+        },
+        "android_kernel_modules_and_devicetree_oneplus_sm8850": {
+          "path": "./",
+          "sha": "5ab2a689ff87d7d28c511f1762cf41c1b90d965a",
+          "date": "2026-07-23T07:56:10Z",
+          "subject": "Synchronize code for OnePlus CPH2745_16.0.9.400(EX01) CPH2747_16.0.9.400(EX01) CPH2749_16.0.9.400(EX01) PLK110_16.0.9.400(CN01)"
+        }
+      },
+      "vendor_tree_not_synced": {
+        "repo": "android_kernel_oneplus_sm8850",
+        "official_path": "kernel_platform/soc-repo",
+        "sha": "fc30e54174d254ff7f33622a9278e4435f6718d2",
+        "date": "2026-07-23T07:55:21Z",
+        "makefile": "6.11.0",
+        "subject": "Synchronize code for OnePlus CPH2745_16.0.9.400(EX01) CPH2747_16.0.9.400(EX01) CPH2749_16.0.9.400(EX01) PLK110_16.0.9.400(CN01)"
+      }
+    },
+    "OP-PAD-3-SM8750": {
+      "os_version": "A16",
+      "config": "configs/a16/OP-PAD-3-SM8750.json",
+      "manifest": "manifests/a16/oneplus_pad_3_sm8750_w.xml",
+      "gki": "android15-6.6",
+      "kernel_version": "6.6.118",
+      "branch": "oneplus/sm8750_b_16.0.0_pad_3",
+      "official_manifest": "https://github.com/OnePlusOSS/kernel_manifest/blob/oneplus/sm8750/oneplus_pad_3_b.xml",
+      "baseline_zip": "AK3_OP-PAD-3-SM8750_A16_android15-6.6.118_KSUN_33239_SuSFS_v2.2.0.zip",
+      "projects": {
+        "android_kernel_common_oneplus_sm8750": {
+          "path": "kernel_platform/common",
+          "sha": "30811466f8448e31d902088f76e51b27f9a78eb0",
+          "date": "2026-07-31T09:03:33Z",
+          "subject": "Synchronize code for OnePlus OPD2415_16.0.9.400(EX01)",
+          "previous_sublevel": "6.6.89 at fbb7ab1ec2a252174da7414b2edeff3959947dc3, still used by configs/a16/OP-PAD-3-SM8750-6.6.89.json"
+        },
+        "android_kernel_modules_and_devicetree_oneplus_sm8750": {
+          "path": "./",
+          "sha": "1328964c65419be8d970f05cd61f15de5cc81cd8",
+          "date": "2026-07-23T07:49:07Z",
+          "subject": "Synchronize code for OnePlus OPD2415_16.0.9.400(EX01)"
+        }
+      },
+      "vendor_tree_not_synced": {
+        "repo": "android_kernel_oneplus_sm8750",
+        "official_path": "kernel_platform/msm-kernel",
+        "sha": "a28bd5b70ee5ba6e9d24489f20b9c4ac2872f9ec",
+        "date": "2026-07-23T07:46:55Z",
+        "makefile": "6.6.118",
+        "subject": "Synchronize code for OnePlus OPD2415_16.0.9.400(EX01)"
+      }
+    }
+  }
+}
