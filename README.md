@@ -23,15 +23,20 @@ WildKernels releases stopped at **v2.2.0-r4** (KernelSU-Next 33239, SUSFS v2.2.0
 
 Pins, and the KernelSU-Next fix patch those commits need, live in [`versions/ksun-susfs.json`](versions/ksun-susfs.json).
 
-OnePlusOSS kernel projects whose manifests use a **branch name** are synced at build time. Projects pinned to a **commit SHA** were not bulk-updated here.
+OnePlus 15 (A16) and Pad 3 SM8750 (A16) are pinned to the OnePlusOSS tips recorded on 2026-09-28 in [`versions/oneplus-oss-targets.json`](versions/oneplus-oss-targets.json). Other manifests are unchanged: branch-name revisions still float at sync time, and older SHA pins (including `OP-PAD-3-SM8750-6.6.89`) stay frozen.
+
+| Device | Config | Manifest | OnePlusOSS branch | Kernel |
+| --- | --- | --- | --- | --- |
+| OnePlus 15 | `configs/a16/OP15.json` | `manifests/a16/oneplus_15_w.xml` | `oneplus/sm8850_b_16.0.0_oneplus_15` | android16-6.12.23 |
+| Pad 3 SM8750 | `configs/a16/OP-PAD-3-SM8750.json` | `manifests/a16/oneplus_pad_3_sm8750_w.xml` | `oneplus/sm8750_b_16.0.0_pad_3` | android15-6.6.118 |
 
 ### Produce AnyKernel3 assets
 
 1. Open **Actions → Build and Release OnePlus Kernels → Run workflow** on this fork.
 2. Leave `ksu_options` and the five SUSFS fields at their defaults (they already contain the pins above).
-3. Pick a small `op_model` first (`android16-6.12`, `android15-6.6`, …). `A14+15+16` builds every config.
+3. For these two devices, set `op_model` to **`OP15+OP-PAD-3-SM8750`**. That selects only the A16 configs in the table. `android16-6.12` and `android15-6.6` still build every A15/A16 device on that GKI line. `A14+15+16` builds every config.
 4. Set **Create a release** off for a trial. Artifacts are the `AK3_*.zip` uploads from the build jobs.
-5. Set **Create a release** on only after a trial you trust. The workflow tags `v2.3.0-rN` (next `-r` for that SUSFS version) and uploads a **draft** GitHub Release. Publish the draft when you want it public.
+5. Set **Create a release** on only after a trial you trust. The workflow tags `v2.3.0-rN` (next `-r` for that SUSFS version) and uploads a **draft** GitHub Release. Publish the draft when you want it public. Turning release on with `OP15+OP-PAD-3-SM8750` still drafts one release for the whole run, so prefer a trial with release off and download the two zips.
 
 Clearing a SUSFS field falls back to the floating `gki-android*` branch tip. The v2.3.0 fix patch matches the pinned KernelSU-Next commit only.
 

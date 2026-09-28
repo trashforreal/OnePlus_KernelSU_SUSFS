@@ -13,10 +13,11 @@ on:
         type: boolean
         default: false
       op_model:
-        description: 'Select the OnePlus kernels to build'
+        description: 'Select the OnePlus kernels to build. OP15+OP-PAD-3-SM8750 builds only those two A16 configs.'
         required: true
         type: choice
         options:
+          - OP15+OP-PAD-3-SM8750
           - A14+15+16
           - A15+16
           - A14+15
@@ -153,6 +154,10 @@ jobs:
               ;;
             A14)
               jq_filter="map(select(.os_version == \"A14\"))"
+              ;;
+            OP15+OP-PAD-3-SM8750)
+              jq_filter="map(select((.model == \"OP15\" and .os_version == \"A16\") or (.model == \"OP-PAD-3-SM8750\" and .os_version == \"A16\")))"
+              echo "ℹ️  Two-device filter: configs/a16/OP15.json and configs/a16/OP-PAD-3-SM8750.json"
               ;;
             android*-*.*)
               # Extract android version and kernel version
@@ -533,6 +538,9 @@ jobs:
           if [[ "${{ inputs.op_model }}" == android*-*.* ]]; then
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "> **⚠️ Android-Kernel Filter:** Only A15 and A16 devices will be built for \`${{ inputs.op_model }}\`" >> $GITHUB_STEP_SUMMARY
+          elif [[ "${{ inputs.op_model }}" == "OP15+OP-PAD-3-SM8750" ]]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> **Two-device filter:** \`configs/a16/OP15.json\` (android16-6.12) and \`configs/a16/OP-PAD-3-SM8750.json\` (android15-6.6). The A15 pad config and \`OP-PAD-3-SM8750-6.6.89\` are not included." >> $GITHUB_STEP_SUMMARY
           fi
 
   mirror_toolchain:
