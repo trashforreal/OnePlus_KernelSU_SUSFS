@@ -1108,6 +1108,32 @@ runs:
               patch -p1 --forward < "$SUSFS_FOLDER/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch" || true
             fi
             ;;
+          "v2.3.0")
+            if [ "${{ inputs.ksu_type }}" != "KSUN" ]; then
+              echo "::error::SUSFS v2.3.0 fix-up in this repo is for KernelSU-Next only"
+              exit 1
+            fi
+            cd "$KSUN_FOLDER"
+            EXPECTED_KSUN=""
+            if [ -f "$GITHUB_WORKSPACE/versions/ksun-susfs.json" ]; then
+              EXPECTED_KSUN=$(jq -r '.kernelsu_next.sha' "$GITHUB_WORKSPACE/versions/ksun-susfs.json")
+            fi
+            if [ -n "${KSU_COMMIT_SHA:-}" ] && [ -n "$EXPECTED_KSUN" ] && [ "$KSU_COMMIT_SHA" != "$EXPECTED_KSUN" ]; then
+              echo "::warning::SUSFS v2.3.0 fix patch was generated for KernelSU-Next $EXPECTED_KSUN but this job resolved $KSU_COMMIT_SHA. The fix patch will fail if the trees differ."
+            fi
+            # Upstream enable patch does not apply cleanly on current KSUN dev.
+            # Failed hunks are completed by patches/ksun-susfs/v2.3.0/after-enable.patch,
+            # which also carries hook-mode and KSU toolkit changes (no separate Wild v2.2.0 patches).
+            patch -p1 --forward < "$SUSFS_FOLDER/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch" || true
+            find kernel \( -name '*.rej' -o -name '*.orig' \) -delete
+            FIX_PATCH="$GITHUB_WORKSPACE/patches/ksun-susfs/v2.3.0/after-enable.patch"
+            if [ ! -f "$FIX_PATCH" ]; then
+              echo "::error::Missing SUSFS v2.3.0 fix patch: $FIX_PATCH"
+              exit 1
+            fi
+            echo "Applying SUSFS v2.3.0 KSUN fix patch"
+            patch -p1 --forward < "$FIX_PATCH"
+            ;;
           *)
             echo "::error::Unsupported SUSFS version: $susfs_version"
             exit 1
