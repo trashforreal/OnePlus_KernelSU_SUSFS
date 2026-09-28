@@ -30,10 +30,10 @@ on:
           - android12-5.10
         default: A14+15+16
       ksu_options:
-        description: 'Enter KernelSU build json'
+        description: 'KernelSU build json. Default is the pinned KernelSU-Next dev tip in versions/ksun-susfs.json (not the floating branch name).'
         required: true
         type: string
-        default: '[{"type":"ksun","hash":"dev"}]'
+        default: '[{"type":"ksun","hash":"c61d876480976e553060789759cc4b54c9e7d816"}]'
       optimize_level:
         description: "Compiler optimization level"
         required: true
@@ -59,25 +59,25 @@ on:
         type: string
         default: ''
       android12-5_10_susfs_branch_or_commit:
-        description: 'Enter SusFS Branch or commit hash for android12-5.10'
+        description: 'SUSFS ref for android12-5.10. Default is the v2.3.0 gki-android12-5.10 tip in versions/ksun-susfs.json.'
         type: string
-        default: ''
+        default: '9892175b4acec7ee844e113b8d02c0f4d12cdfac'
       android13-5_15_susfs_branch_or_commit:
-        description: 'Enter SusFS Branch or commit hash for android13-5.15'
+        description: 'SUSFS ref for android13-5.15. Default is the v2.3.0 gki-android13-5.15 tip in versions/ksun-susfs.json.'
         type: string
-        default: ''
+        default: '687d2d18d94cb2e3e72d1074778d58384d58e379'
       android14-6_1_susfs_branch_or_commit:
-        description: 'Enter SusFS Branch or commit hash for android14-6.1'
+        description: 'SUSFS ref for android14-6.1. Default is the v2.3.0 gki-android14-6.1 tip in versions/ksun-susfs.json.'
         type: string
-        default: ''
+        default: '24743360ea08d98f6ad72b856851abed8de5854f'
       android15-6_6_susfs_branch_or_commit:
-        description: 'Enter SusFS Branch or commit hash for android15-6.6'
+        description: 'SUSFS ref for android15-6.6. Default is the v2.3.0 gki-android15-6.6 tip in versions/ksun-susfs.json.'
         type: string
-        default: ''
+        default: 'a0f9c59e2243f8a5db955f4ad1686d5e0ad26e1a'
       android16-6_12_susfs_branch_or_commit:
-        description: 'Enter SusFS Branch or commit hash for android16-6.12'
+        description: 'SUSFS ref for android16-6.12. Default is the v2.3.0 gki-android16-6.12 tip in versions/ksun-susfs.json.'
         type: string
-        default: ''
+        default: 'b213c54126fb243595ce7876e91d84d6e0861fec'
 
 jobs:
   set-op-model:
@@ -1205,6 +1205,7 @@ jobs:
           
           ### This Release
           - Updated SUSFS to $SUSFS_BASE_VERSION.
+          - KernelSU-Next pin: \`$ksu_display\` (see versions/ksun-susfs.json on the builder commit).
           - Added HMBIRD support for all SM8750/MT6991 devices.
           - Improved ccache build system.
           - Enhanced SUSFS hiding capabilities.

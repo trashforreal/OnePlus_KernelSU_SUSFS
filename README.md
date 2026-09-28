@@ -3,12 +3,37 @@
 # 🔥 Wild Kernels for OnePlus (Oppo/Realme)
 
 [![KernelSU-Next](https://img.shields.io/badge/KernelSU_Next-Supported-green)](https://kernelsu-next.github.io/webpage/)
+[![KernelSU-Next pin](https://img.shields.io/badge/KernelSU--Next-dev%2033312-green)](https://github.com/KernelSU-Next/KernelSU-Next/commit/c61d876480976e553060789759cc4b54c9e7d816)
+[![SUSFS pin](https://img.shields.io/badge/SUSFS-v2.3.0-orange?logo=gitlab)](https://gitlab.com/simonpunk/susfs4ksu/-/commit/a0f9c59e2243f8a5db955f4ad1686d5e0ad26e1a)
 [![KernelSU](https://img.shields.io/badge/KernelSU-Supported-green)](https://kernelsu.org/)
 [![Wild KSU](https://img.shields.io/badge/Wild_KSU-Not%20Supported-cb2431)](https://github.com/WildKernels/Wild_KSU/)
 [![SUSFS](https://img.shields.io/badge/SUSFS-Integrated-orange?logo=gitlab)](https://gitlab.com/simonpunk/susfs4ksu)
 [![OnePlusOSS Tracking Status](https://img.shields.io/badge/OnePlusOSS--Tracker-active-green)](https://github.com/WildKernels/OnePlus_KernelSU_SUSFS/blob/status-page/README.md)
 
 </div>
+
+---
+
+## This fork
+
+WildKernels releases stopped at **v2.2.0-r4** (KernelSU-Next 33239, SUSFS v2.2.0). This fork does not replace that project. Its **Build and Release OnePlus Kernels** workflow defaults are pinned so a fresh `workflow_dispatch` builds:
+
+- KernelSU-Next `dev` `c61d876480976e553060789759cc4b54c9e7d816` (version **33312**)
+- SUSFS **v2.3.0** tips for every `gki-android*` line in the matrix
+
+Pins, and the KernelSU-Next fix patch those commits need, live in [`versions/ksun-susfs.json`](versions/ksun-susfs.json).
+
+OnePlusOSS kernel projects whose manifests use a **branch name** are synced at build time. Projects pinned to a **commit SHA** were not bulk-updated here.
+
+### Produce AnyKernel3 assets
+
+1. Open **Actions → Build and Release OnePlus Kernels → Run workflow** on this fork.
+2. Leave `ksu_options` and the five SUSFS fields at their defaults (they already contain the pins above).
+3. Pick a small `op_model` first (`android16-6.12`, `android15-6.6`, …). `A14+15+16` builds every config.
+4. Set **Create a release** off for a trial. Artifacts are the `AK3_*.zip` uploads from the build jobs.
+5. Set **Create a release** on only after a trial you trust. The workflow tags `v2.3.0-rN` (next `-r` for that SUSFS version) and uploads a **draft** GitHub Release. Publish the draft when you want it public.
+
+Clearing a SUSFS field falls back to the floating `gki-android*` branch tip. The v2.3.0 fix patch matches the pinned KernelSU-Next commit only.
 
 ---
 
@@ -62,7 +87,7 @@ Flashing this kernel will not void your warranty, but there is always a risk of 
 ## 📱 OnePlusOSS Repositories Tracking
 
 - 📊 **Live Dashboard**: [OnePlus Repos Tracking & Changes](https://github.com/WildKernels/OnePlus_KernelSU_SUSFS/blob/status-page/README.md)
-- ⏱️ **Update Frequency**: Every 2 hours (Automated)
+- ⏱️ **Update Frequency**: Every 12 hours (`.github/workflows/oplus-kernel-monitor.yml`, cron `0 */12 * * *`)
 ---
 
 ## ✨ Features
